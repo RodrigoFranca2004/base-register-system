@@ -41,7 +41,6 @@ export class Client extends BaseEntity {
       updatedAt: new Date(),
     };
 
-    // Creates a new client with a new UUID
     return new Client(props, baseProps);
   }
 

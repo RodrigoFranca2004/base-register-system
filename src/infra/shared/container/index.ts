@@ -47,10 +47,8 @@ container.register("DeleteClientUseCase", DeleteClientUseCase);
 
 (async () => {
   try {
-    // Resolve o broker que acabamos de registrar
     const messageBroker = container.resolve<IMessageBroker>('IMessageBroker');
     
-    // Inicia o consumidor
     await startClientCreatedConsumer(messageBroker);
 
   } catch (error) {

@@ -2,11 +2,6 @@ import { IClientRepository } from "@domain/repositories/IClientRepository";
 import { ClientOutputDTO } from "../../dtos/client.dto";
 import { inject, injectable } from "tsyringe";
 
-/**
- * ListClientsUseCase
- *
- * Retrieves a list of all clients.
- */
 @injectable()
 export class ListClientsUseCase {
   constructor(
@@ -14,10 +9,6 @@ export class ListClientsUseCase {
     private clientRepository: IClientRepository
   ) {}
 
-  /**
-   * Executes the use case.
-   * @returns An array of client DTOs.
-   */
   async execute(): Promise<ClientOutputDTO[]> {
     // --- Step 1: Fetch all from the repository ---
     const clients = await this.clientRepository.findAll();

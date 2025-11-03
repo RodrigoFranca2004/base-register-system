@@ -7,11 +7,6 @@ import { UpdateClientUseCase } from '@application/use-cases/client/update-client
 import { DeleteClientUseCase } from '@application/use-cases/client/delete-client.use-case';
 import { BusinessRuleError, ResourceNotFoundError } from '@application/errors/application-errors';
 
-/**
- * ClientController
- *
- * Handles all HTTP requests related to Clients.
- */
 export class ClientController {
 
   /**
@@ -20,19 +15,15 @@ export class ClientController {
    */
   public async create(req: Request, res: Response): Promise<Response> {
     try {
-      // 1. Resolve the use case from the container
       const createClientUseCase = container.resolve(CreateClientUseCase);
       
-      // 2. Execute the use case with validated input (DTO)
       const client = await createClientUseCase.execute(req.body);
 
-      // 3. Return a successful HTTP response
       return res.status(201).json(client);
 
     } catch (error) {
-      // 4. Handle errors by checking their type
       if (error instanceof BusinessRuleError) {
-        return res.status(400).json({ message: error.message }); // 400 Bad Request
+        return res.status(400).json({ message: error.message }); 
       }
       return res.status(500).json({ message: 'Internal Server Error' });
     }
@@ -52,7 +43,7 @@ export class ClientController {
 
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
-        return res.status(404).json({ message: error.message }); // 404 Not Found
+        return res.status(404).json({ message: error.message }); 
       }
       return res.status(500).json({ message: 'Internal Server Error' });
     }
@@ -89,10 +80,10 @@ export class ClientController {
 
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
-        return res.status(404).json({ message: error.message }); // 404 Not Found
+        return res.status(404).json({ message: error.message }); 
       }
       if (error instanceof BusinessRuleError) {
-        return res.status(400).json({ message: error.message }); // 400 Bad Request
+        return res.status(400).json({ message: error.message });
       }
       return res.status(500).json({ message: 'Internal Server Error' });
     }
@@ -113,7 +104,7 @@ export class ClientController {
 
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
-        return res.status(404).json({ message: error.message }); // 404 Not Found
+        return res.status(404).json({ message: error.message }); 
       }
       return res.status(500).json({ message: 'Internal Server Error' });
     }

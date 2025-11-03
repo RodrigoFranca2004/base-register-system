@@ -16,11 +16,6 @@ export class GetClientByIdUseCase {
     private cacheProvider: ICacheProvider
   ) {}
 
-  /**
-   * @param id - The ID of the client to fetch.
-   * @returns A DTO with the client's data.
-   * @throws ResourceNotFoundError if the client is not found.
-   */
   async execute(id: string): Promise<ClientOutputDTO> {
     const cacheKey = `${this.cacheKeyPrefix}:${id}`;
 

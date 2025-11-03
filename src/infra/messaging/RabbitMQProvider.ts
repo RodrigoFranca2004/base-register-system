@@ -2,6 +2,8 @@ import { injectable } from "tsyringe";
 import { IMessageBroker } from "@application/providers/IMessageBroker";
 import { rabbitMQConnection } from "./index";
 
+// NOTA: type 'any' is being utilized because ts was having problems compiling this code 
+
 @injectable()
 export class RabbitMQProvider implements IMessageBroker {
   private channel: any | null = null;
