@@ -1,38 +1,35 @@
-import { container } from 'tsyringe';
+import { container } from "tsyringe";
+
+// --- Cache ---
+import { ICacheProvider } from "@application/providers/ICacheProvider";
+import { RedisCacheProvider } from "@infra/cache/RedisCacheProvider";
 
 // --- Domain Repositories ---
-import { IClientRepository } from '@domain/repositories/IClientRepository';
-import { MongoClientRepository } from '@infra/database/mongodb/repositories/MongoClientRepository';
+import { IClientRepository } from "@domain/repositories/IClientRepository";
+import { MongoClientRepository } from "@infra/database/mongodb/repositories/MongoClientRepository";
 
 // --- Use Cases ---
-// We need to register the use cases themselves so the controllers can ask for them
-import { CreateClientUseCase } from '@application/use-cases/client/create-client.use-case';
-import { GetClientByIdUseCase } from '@application/use-cases/client/get-client-by-id.use-case';
-import { ListClientsUseCase } from '@application/use-cases/client/list-clients.use-case';
-import { UpdateClientUseCase } from '@application/use-cases/client/update-client.use-case';
-import { DeleteClientUseCase } from '@application/use-cases/client/delete-client.use-case';
+import { CreateClientUseCase } from "@application/use-cases/client/create-client.use-case";
+import { GetClientByIdUseCase } from "@application/use-cases/client/get-client-by-id.use-case";
+import { ListClientsUseCase } from "@application/use-cases/client/list-clients.use-case";
+import { UpdateClientUseCase } from "@application/use-cases/client/update-client.use-case";
+import { DeleteClientUseCase } from "@application/use-cases/client/delete-client.use-case";
 
-/*
- * --- REPOSITORY REGISTRATION ---
- *
- * We are telling the container:
- * "When someone asks for (injects) 'IClientRepository',
- * give them a single instance (singleton) of MongoClientRepository."
- */
+// --- CACHE PROVIDER REGISTRATION ---
+container.registerSingleton<ICacheProvider>(
+  "ICacheProvider",
+  RedisCacheProvider
+);
+
+// --- REPOSITORY REGISTRATION ---
 container.registerSingleton<IClientRepository>(
-  'IClientRepository', // This is the "token" we will inject
+  "IClientRepository",
   MongoClientRepository
 );
 
-/*
- * --- USE CASE REGISTRATION ---
- *
- * We register all use cases so they can be resolved by the controller.
- * Since they have their own dependencies (IClientRepository),
- * tsyringe will automatically inject the repository *into* the use case.
- */
-container.register('CreateClientUseCase', CreateClientUseCase);
-container.register('GetClientByIdUseCase', GetClientByIdUseCase);
-container.register('ListClientsUseCase', ListClientsUseCase);
-container.register('UpdateClientUseCase', UpdateClientUseCase);
-container.register('DeleteClientUseCase', DeleteClientUseCase);
+// --- USE CASE REGISTRATION ---
+container.register("CreateClientUseCase", CreateClientUseCase);
+container.register("GetClientByIdUseCase", GetClientByIdUseCase);
+container.register("ListClientsUseCase", ListClientsUseCase);
+container.register("UpdateClientUseCase", UpdateClientUseCase);
+container.register("DeleteClientUseCase", DeleteClientUseCase);
