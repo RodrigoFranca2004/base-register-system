@@ -1,30 +1,44 @@
-import { IClientRepository } from '@domain/repositories/IClientRepository';
-import { ResourceNotFoundError } from '@application/errors/application-errors';
+import { IClientRepository } from "@domain/repositories/IClientRepository";
+import { ResourceNotFoundError } from "@application/errors/application-errors";
+import { inject, injectable } from "tsyringe";
+import { ClientOutputDTO } from "@application/dtos/client.dto";
 
 /**
  * DeleteClientUseCase
  *
  * Deletes a client by their unique ID.
  */
+@injectable()
 export class DeleteClientUseCase {
-  constructor(private clientRepository: IClientRepository) {}
+  constructor(
+    @inject("IClientRepository")
+    private clientRepository: IClientRepository
+  ) {}
 
   /**
    * Executes the use case.
    * @param id - The ID of the client to delete.
-   * @returns A promise that resolves to void.
+   * @returns A DTO with the deleted client's data.
    * @throws ResourceNotFoundError if the client to be deleted is not found.
    */
-  async execute(id: string): Promise<void> {
+  async execute(id: string): Promise<ClientOutputDTO> {
     
-    // --- Step 1: Check if the client exists before deleting ---
-    // This provides a clear error message vs. just deleting nothing.
-    const clientExists = await this.clientRepository.findById(id);
-    if (!clientExists) {
-      throw new ResourceNotFoundError('Client not found');
+    const deletedClient = await this.clientRepository.delete(id);
+
+    if (!deletedClient) {
+      throw new ResourceNotFoundError('Client to be deleted not found.');
     }
 
-    // --- Step 2: Delete from the repository ---
-    await this.clientRepository.delete(id);
+    const output: ClientOutputDTO = {
+      id: deletedClient.id,
+      name: deletedClient.name,
+      email: deletedClient.email,
+      phone: deletedClient.phone,
+      createdAt: deletedClient.createdAt,
+      updatedAt: deletedClient.updatedAt,
+    };
+
+    // 4. Retorne o DTO
+    return output;
   }
 }

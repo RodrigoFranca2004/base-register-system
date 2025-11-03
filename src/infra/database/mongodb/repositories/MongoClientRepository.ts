@@ -2,11 +2,12 @@ import { IClientRepository } from "@domain/repositories/IClientRepository";
 import { Client, IClientProps } from "@domain/entities/client.entity";
 import { ClientModel, IClientDocument } from "../models/client.model";
 import { ClientMapper } from "../mappers/client.mapper";
-import { randomUUID } from "crypto";
+import { injectable } from "tsyringe";
 
 /**
  * Concrete implementation of IClientRepository using Mongoose.
  */
+@injectable()
 export class MongoClientRepository implements IClientRepository {
   /**
    * Creates a new client.
@@ -80,8 +81,14 @@ export class MongoClientRepository implements IClientRepository {
   /**
    * Deletes a client by its ID.
    */
-  async delete(id: string): Promise<void> {
-    await ClientModel.findByIdAndDelete(id).exec();
+  async delete(id: string): Promise<Client | null> {
+    const deletedDoc = await ClientModel.findByIdAndDelete(id).exec();
+
+    if (!deletedDoc) {
+      return null;
+    }
+
+    return ClientMapper.toDomain(deletedDoc);
   }
 
   // --- Specific Method Implementation ---

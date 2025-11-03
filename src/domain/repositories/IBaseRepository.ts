@@ -43,5 +43,5 @@ export interface IBaseRepository<T extends BaseEntity> {
    * @param id - The ID of the entity to delete.
    * @returns A promise that resolves when the operation is complete.
    */
-  delete(id: string): Promise<void>;
+  delete(id: string): Promise<T | null>;
 }
