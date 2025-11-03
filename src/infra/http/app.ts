@@ -3,6 +3,7 @@ import "reflect-metadata";
 import express, { NextFunction, Request, Response } from "express";
 import "@infra/shared/container";
 import "@infra/cache";
+import "@infra/messaging";
 import { router } from "./routes";
 import { ZodError } from "zod";
 import {
