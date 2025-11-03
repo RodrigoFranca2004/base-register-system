@@ -1,5 +1,6 @@
 import { IClientRepository } from "@domain/repositories/IClientRepository";
 import { ClientOutputDTO, CreateClientInputDTO } from "../../dtos/client.dto";
+import { inject, injectable } from "tsyringe";
 
 /**
  * CreateClientUseCase
@@ -7,9 +8,13 @@ import { ClientOutputDTO, CreateClientInputDTO } from "../../dtos/client.dto";
  * This class orchestrates the creation of a new client.
  * It contains the application-specific logic for this operation.
  */
+@injectable()
 export class CreateClientUseCase {
   // The use case depends on the repository *interface* (Dependency Inversion)
-  constructor(private clientRepository: IClientRepository) {}
+  constructor(
+    @inject("IClientRepository")
+    private clientRepository: IClientRepository
+  ) {}
 
   /**
    * Executes the use case.

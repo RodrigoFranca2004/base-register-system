@@ -1,15 +1,19 @@
-import { IClientRepository } from '@domain/repositories/IClientRepository';
-import { ClientOutputDTO } from '../../dtos/client.dto';
-import { ResourceNotFoundError } from '@application/errors/application-errors';
-
+import { IClientRepository } from "@domain/repositories/IClientRepository";
+import { ClientOutputDTO } from "../../dtos/client.dto";
+import { ResourceNotFoundError } from "@application/errors/application-errors";
+import { inject, injectable } from "tsyringe";
 
 /**
  * GetClientByIdUseCase
  *
  * Fetches a single client by their unique ID.
  */
+@injectable()
 export class GetClientByIdUseCase {
-  constructor(private clientRepository: IClientRepository) {}
+  constructor(
+    @inject("IClientRepository")
+    private clientRepository: IClientRepository
+  ) {}
 
   /**
    * Executes the use case.
@@ -18,13 +22,12 @@ export class GetClientByIdUseCase {
    * @throws ClientNotFoundError if the client is not found.
    */
   async execute(id: string): Promise<ClientOutputDTO> {
-    
     // --- Step 1: Fetch from the repository ---
     const client = await this.clientRepository.findById(id);
 
     // --- Step 2: Handle "Not Found" ---
     if (!client) {
-      throw new ResourceNotFoundError('Client not found.');
+      throw new ResourceNotFoundError("Client not found.");
     }
 
     // --- Step 3: Map to Output DTO and return ---
