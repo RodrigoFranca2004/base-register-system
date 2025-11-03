@@ -5,7 +5,7 @@
 export interface CreateClientInputDTO {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
 }
 
 /**
@@ -28,7 +28,7 @@ export interface ClientOutputDTO {
   id: string;
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -3,13 +3,13 @@ import { BaseEntity } from "./base.entity";
 export interface IClientProps {
     name: string;
     email: string;
-    phone: string;
+    phone?: string;
 }
 
 export class Client extends BaseEntity {
     public name: string;
     public email: string;
-    public phone: string;
+    public phone?: string;
 
     /**
    * @param props - The properties of the client (IClientProps).
